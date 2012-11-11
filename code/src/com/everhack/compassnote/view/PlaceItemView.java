@@ -1,6 +1,7 @@
 package com.everhack.compassnote.view;
 
 import java.util.List;
+import java.util.Set;
 
 import com.everhack.compassnote.R;
 
@@ -17,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.LruCache;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -33,6 +35,7 @@ public class PlaceItemView extends RelativeLayout {
     private TextView mSubtitleView;
     private TextView mCommentView;
     private TextView mLoadingView;
+    private LruCache mCache;
 
     private FoursquareVenue mData;
     private Handler mHandler;
@@ -54,7 +57,7 @@ public class PlaceItemView extends RelativeLayout {
         super(context, attrs);
     }
 
-    public void bindView(FoursquareVenue data, Handler handler, OnItemFavorited listener) {
+    public void bindView(FoursquareVenue data, OnItemFavorited listener, LruCache cache) {
 
         mTitleView.setText(data.getName());
         mSubtitleView.setText(data.getCategory());
@@ -63,27 +66,39 @@ public class PlaceItemView extends RelativeLayout {
         mLoadingView.setVisibility(VISIBLE);
         mScenePicture.setImageDrawable(null);
 
-        mHandler = handler;
         mData = data;
         mListener = listener;
+        mCache = cache;
 
-        FoursquareVenueImageService.getVenuesImageInCity(data, 200, 200, new FoursquareServiceDelegate<Bitmap>() {
+        //Bitmap bitmap = (Bitmap) cache.get(data);
+        Bitmap bitmap = null;
+        if (bitmap!= null) {
+            mLoadingView.setVisibility(GONE);
+            mScenePicture.setImageBitmap(bitmap);
+            Animation myFadeInAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
+            mScenePicture.startAnimation(myFadeInAnimation);
 
-            @Override
-            public void receivedResponse(Bitmap response) {
-                mLoadingView.setVisibility(GONE);
-                mScenePicture.setImageBitmap(response);
-                Animation myFadeInAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
-                mScenePicture.startAnimation(myFadeInAnimation);
-            }
+        } else {
+            FoursquareVenueImageService.getVenuesImageInCity(data, 200, 200, new FoursquareServiceDelegate<Bitmap>() {
 
-            @Override
-            public void requestFailed() {
-                // TODO Auto-generated method stub
+                @Override
+                public void receivedResponse(Bitmap response) {
+                    
+                    mCache.put(mData, response);
+                    mLoadingView.setVisibility(GONE);
+                    mScenePicture.setImageBitmap(response);
+                    Animation myFadeInAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
+                    mScenePicture.startAnimation(myFadeInAnimation);
+                }
 
-            }
+                @Override
+                public void requestFailed() {
+                    // TODO Auto-generated method stub
+
+                }
 
         });
+        }
         //new LoadImageTask().execute(data.getDrawableResScene());
     }
 
@@ -134,6 +149,7 @@ public class PlaceItemView extends RelativeLayout {
 
     public interface OnItemFavorited {
         public void onItemFavorited(FoursquareVenue venue, boolean isFavorite);
+        public Set<FoursquareVenue> getFavoritedItems();
     }
 
 }

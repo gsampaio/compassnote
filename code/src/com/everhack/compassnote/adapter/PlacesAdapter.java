@@ -2,9 +2,11 @@ package com.everhack.compassnote.adapter;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +24,15 @@ public class PlacesAdapter extends BaseAdapter implements OnItemFavorited{
     private List<FoursquareVenue> mData;
     private LayoutInflater mInflater;
     private HashMap<FoursquareVenue, Boolean> mSelecteVenues = new HashMap<FoursquareVenue, Boolean>();
+    private LruCache mCache;
 
     // Helper for communication with owner activity
     private Handler mHandler;
 
-    public PlacesAdapter(List<FoursquareVenue> data, Context context, Handler handler) {
+    public PlacesAdapter(List<FoursquareVenue> data, Context context, LruCache cache) {
         mData = data;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mHandler = handler;
+        mCache = cache;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class PlacesAdapter extends BaseAdapter implements OnItemFavorited{
 
         FoursquareVenue venue = (FoursquareVenue) getItem(position);
 
-        view.bindView(venue, mHandler, this);
+        view.bindView(venue, this, mCache);
         return view;
     }
 
@@ -88,6 +91,11 @@ public class PlacesAdapter extends BaseAdapter implements OnItemFavorited{
         }else {
             mSelecteVenues.put(venue, isFavorite);
         }
+    }
+
+    @Override
+    public Set<FoursquareVenue> getFavoritedItems() {
+        return mSelecteVenues.keySet();
     }
     
 }

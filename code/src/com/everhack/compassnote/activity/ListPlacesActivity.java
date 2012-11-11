@@ -9,12 +9,15 @@ import com.everhack.compassnote.foursquare.FoursquareServiceDelegate;
 import com.everhack.compassnote.foursquare.FoursquareVenue;
 import com.everhack.compassnote.foursquare.FoursquareVenueService;
 import com.everhack.compassnote.model.PlaceData;
+import com.everhack.compassnote.view.PlaceItemView.OnItemFavorited;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.LruCache;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -28,9 +31,12 @@ public class ListPlacesActivity extends ListActivity {
     public final static int EVENT_FAVORITE_ITEM = 0;
 
     public final static String INTENT_EXTRA_CITY = "city";
+    
+    private LruCache<FoursquareVenue, Bitmap> mCache;
 
+    private OnItemFavorited mFavoriteItems;
     private List<FoursquareVenue> mSelectedVenues = new ArrayList<FoursquareVenue>();
-    private EventHandler mHandler = new EventHandler();
+    //private EventHandler mHandler = new EventHandler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,12 @@ public class ListPlacesActivity extends ListActivity {
         Intent intent = getIntent();
         String city = intent.getExtras().getString(INTENT_EXTRA_CITY);
 
+        int cacheSize = 4 * 1024 * 1024; // 4MiB
+        mCache = new LruCache(cacheSize) {
+            protected int sizeOf(String key, Bitmap value) {
+                return value.getByteCount();
+        }};
+        
         setProgressBarIndeterminateVisibility(true);
 
         if (city != null) {
@@ -50,7 +62,8 @@ public class ListPlacesActivity extends ListActivity {
                 public void receivedResponse(List<FoursquareVenue> response) {
                     List<FoursquareVenue> venueList =  response;
 
-                    mAdapter = new PlacesAdapter(venueList, ListPlacesActivity.this, mHandler);
+                    mAdapter = new PlacesAdapter(venueList, ListPlacesActivity.this, mCache);
+                    mFavoriteItems = (OnItemFavorited) mAdapter;
                     setListAdapter(mAdapter);
                     setProgressBarIndeterminateVisibility(false);
                 }
@@ -87,7 +100,7 @@ public class ListPlacesActivity extends ListActivity {
             case EVENT_FAVORITE_ITEM:
             {
                 int id = msg.arg1;
-                mAdapter.removeItem(id);
+                //mAdapter.removeItem(id);
             }
             }
         }
