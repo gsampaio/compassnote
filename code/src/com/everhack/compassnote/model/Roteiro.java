@@ -1,8 +1,19 @@
 package com.everhack.compassnote.model;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.everhack.compassnote.foursquare.FoursquareVenue;
 
@@ -86,6 +97,38 @@ public class Roteiro {
 	}
 	public void setCountry(String country) {
 		this.country = country;
+	}
+	
+	public void fromEvernote(InputStream note) {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			
+		try {
+				DocumentBuilder dom = dbf.newDocumentBuilder();
+				Document doc = dom.parse(note);
+				doc.getDocumentElement().normalize();
+				
+				NodeList titles = doc.getElementsByTagName("h2");
+				
+				for (int i = 0; i < titles.getLength(); i++) {
+					 Node node = titles.item(i);
+					 if (node.getNodeType() == Node.ELEMENT_NODE) {
+						
+					 }
+				}
+				
+				
+
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 	}
 
 	public String toEvernote(){
