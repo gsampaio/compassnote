@@ -3,6 +3,7 @@ package com.everhack.compassnote.view;
 import java.util.List;
 
 import com.everhack.compassnote.R;
+
 import com.everhack.compassnote.activity.ListPlacesActivity;
 import com.everhack.compassnote.foursquare.FoursquareServiceDelegate;
 import com.everhack.compassnote.foursquare.FoursquareVenue;
@@ -15,12 +16,10 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,7 +36,7 @@ public class PlaceItemView extends RelativeLayout {
 
     private FoursquareVenue mData;
     private Handler mHandler;
-    
+
     private OnItemFavorited mListener;
 
     private OnClickListener mButtonRemoveOnClickListener = new OnClickListener() {
@@ -81,9 +80,9 @@ public class PlaceItemView extends RelativeLayout {
             @Override
             public void requestFailed() {
                 // TODO Auto-generated method stub
-                
+
             }
-            
+
         });
         //new LoadImageTask().execute(data.getDrawableResScene());
     }
@@ -132,7 +131,7 @@ public class PlaceItemView extends RelativeLayout {
             mScenePicture.startAnimation(myFadeInAnimation);
         }
     }
-    
+
     public interface OnItemFavorited {
         public void onItemFavorited(FoursquareVenue venue, boolean isFavorite);
     }

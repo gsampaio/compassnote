@@ -6,12 +6,16 @@ import java.util.List;
 import org.apache.thrift.TException;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.everhack.compassnote.activity.ListPlacesActivity;
+import com.everhack.compassnote.activity.PlacesSearchActivity;
+import com.everhack.compassnote.adapter.RoteiroAdapter;
 import com.everhack.compassnote.model.Roteiro;
 import com.evernote.edam.error.EDAMNotFoundException;
 import com.evernote.edam.error.EDAMSystemException;
@@ -21,7 +25,6 @@ import com.evernote.edam.notestore.NoteMetadata;
 import com.evernote.edam.notestore.NoteStore.Client;
 import com.evernote.edam.notestore.NotesMetadataList;
 import com.evernote.edam.notestore.NotesMetadataResultSpec;
-import com.evernote.edam.type.Note;
 import com.evernote.edam.type.NoteSortOrder;
 import com.evernote.edam.type.Notebook;
 
@@ -124,7 +127,10 @@ public class RoteiroListActivity extends Activity {
 				CompassApp app = ((CompassApp) getApplication());
 				app.getSessionContext().setRoteiro(roteiros.get(position));
 
-				// TODO: jogar para a descricao do roteiro
+				// TODO # jogar para a descricao do roteiro
+                Intent intent = new Intent(RoteiroListActivity.this, RoteiroViewActivity.class);
+                //intent.putExtra(ListPlacesActivity.INTENT_EXTRA_CITY, city);
+                startActivity(intent);
 			}
 		});
 

@@ -12,6 +12,7 @@
     <TextView android:id="@+id/roteiro_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="20/03/2012 a 29/03/2012"/>
+        android:text="20/03/2012 a 29/03/2012"
+        android:visibility="gone"/>
 
 </LinearLayout>

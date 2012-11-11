@@ -4,9 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.everhack.compassnote.foursquare.FoursquareVenue;
+
 public class Roteiro {
 
-	private List<Object> places;
+	private List<FoursquareVenue> places;
 	private List<Checklist> checklist;
 	private String hotel;
 	private Date startDate;
@@ -18,10 +20,10 @@ public class Roteiro {
 	private String metroMap;
 	private String cityPhoto;
 
-	public List<Object> getPlaces() {
+	public List<FoursquareVenue> getPlaces() {
 		return places;
 	}
-	public void setPlaces(List<Object> places) {
+	public void setPlaces(List<FoursquareVenue> places) {
 		this.places = places;
 	}
 	public List<Checklist> getChecklist() {
@@ -71,6 +73,7 @@ public class Roteiro {
 	}
 	public void setCity(String city) {
 		this.city = city;
+		setMetroMap("http://www.amadeus.net/home/new/subwaymaps/en/maps_gifs/"+(getCity().replace(" ", "-").toLowerCase().replace("á", "a").replace("ã", "a"))+"-map.gif");
 	}
 	public String getState() {
 		return state;
@@ -86,11 +89,50 @@ public class Roteiro {
 	}
 
 	public String toEvernote(){
-		return "";
+	    String noteStr = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+
+                "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml2.dtd\">"+
+                "<en-note>"+toHTML()+"</en-note>";
+
+		return noteStr;
 	}
 
 	public String toHTML(){
-		return "";
+	    String noteStr = "<h1>"+getCity()+"</h1>";
+
+        if(getChecklist() != null && getChecklist().size() > 0){
+            noteStr += "<h2 style=\"margin: 20px 0 12px;\">Roteiro</h2>"+
+            "<ul style=\"list-style: none; padding: 0 10px; margin: 5px 0 20px;\">";
+            for (FoursquareVenue v : getPlaces()) {
+                noteStr += "<li style=\"margin-bottom: 10px;\">"+v.getName()+"<span style=\"display: block; clear: both; font-size: 12px; color: #666;\">"+v.getCategory()+"</span></li>";
+            }
+
+            noteStr += "</ul>";
+        }
+
+        if(getChecklist() != null && getChecklist().size() > 0){
+            noteStr += "<h2 style=\"margin: 20px 0 12px;\">Checklist</h2>"+
+                    "<ul style=\"list-style: none; padding: 0 10px; margin: 5px 0 20px;\">";
+
+            for (Checklist chk : getChecklist()) {
+                noteStr += "<li> - "+chk.getValue()+"</li>";
+            }
+            noteStr += "</ul>";
+        }
+
+        if(getCityPhoto() != null && !getCityPhoto().equals("")){
+            noteStr += "<h2 style=\"margin: 20px 0 12px;\">Foto</h2>"+
+                    "<div style=\"text-align: center;\">"+
+                    "<img src="+getCityPhoto()+" style=\"margin: 0 auto; width: 90%;\" />"+
+                    "</div>";
+        }
+
+        if(getMetroMap() != null && !getMetroMap().equals("")){
+            noteStr += "<h2 style=\"margin: 20px 0 12px;\">Metro</h2>"+
+                    "<div style=\"text-align: center;\">"+
+                    "<img src="+getMetroMap()+" style=\"margin: 0 auto; width: 90%;\" />"+
+                    "</div>";
+        }
+		return noteStr;
 	}
 
 	public String getDataString(){

@@ -4,6 +4,8 @@ import org.apache.thrift.transport.TTransportException;
 
 import android.content.Context;
 
+import com.everhack.compassnote.foursquare.FoursquareVenue;
+import com.everhack.compassnote.model.Checklist;
 import com.everhack.compassnote.model.Roteiro;
 import com.evernote.client.oauth.android.EvernoteSession;
 import com.evernote.edam.notestore.NoteStore.Client;
@@ -65,10 +67,15 @@ public class ApplicationContext {
         this.notebookGuid = guid;
     }
 
-    // TODO: Fazer metodos que fazem o parse do roteiro pro note e viceversa,
+    // TODO # Fazer metodos que fazem o parse do roteiro pro note e viceversa,
     // talvez jogar numa class util
     public Note getNoteFromRoteiro(Roteiro r) {
-        return new Note();
+        Note n = new Note();
+        n.setTitle(r.getCity());
+
+        n.setContent(r.toEvernote());
+
+        return n;
     }
 
     public Roteiro getRoteiroFromNote(Note n) {
