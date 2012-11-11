@@ -1,16 +1,13 @@
 package com.everhack.compassnote.activity;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 import com.everhack.compassnote.R;
 import com.everhack.compassnote.adapter.PlacesAdapter;
-import com.everhack.compassnote.foursquare.FoursquareService;
 import com.everhack.compassnote.foursquare.FoursquareServiceDelegate;
 import com.everhack.compassnote.foursquare.FoursquareVenue;
+import com.everhack.compassnote.foursquare.FoursquareVenueService;
 import com.everhack.compassnote.model.PlaceData;
 
 import android.app.ListActivity;
@@ -22,7 +19,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class ListPlacesActivity extends ListActivity implements FoursquareServiceDelegate {
+public class ListPlacesActivity extends ListActivity {
     private PlacesAdapter mAdapter; 
 
     private final int MENU_REFRESH = 0;
@@ -44,8 +41,23 @@ public class ListPlacesActivity extends ListActivity implements FoursquareServic
         String city = intent.getExtras().getString(INTENT_EXTRA_CITY);
 
         if (city != null) {
-            FoursquareService service = new FoursquareService(this);
-            service.getVenuesInCity(city);
+            FoursquareVenueService.getVenuesInCity(city, new FoursquareServiceDelegate<List<FoursquareVenue>>() {
+                @Override
+                public void receivedResponse(List<FoursquareVenue> response) {
+                    List<FoursquareVenue> venueList =  response;
+
+                    mAdapter = new PlacesAdapter(venueList, ListPlacesActivity.this, mHandler);
+                    setListAdapter(mAdapter);
+                    //Set loading false
+
+                }
+
+                @Override
+                public void requestFailed() {
+                    // TODO Auto-generated method stub
+                    
+                }
+            });
         }
 
         //TODO Set loading
@@ -113,20 +125,6 @@ public class ListPlacesActivity extends ListActivity implements FoursquareServic
         
     }
 
-    @Override
-    public void receivedResponse(Object response) {
-        List<FoursquareVenue> venueList = (List<FoursquareVenue>) response;
 
-        mAdapter = new PlacesAdapter(venueList, this, mHandler);
-        setListAdapter(mAdapter);
-        //Set loading false
-
-    }
-
-    @Override
-    public void requestFailed() {
-        // TODO Auto-generated method stub
-        
-    }
 }
 
