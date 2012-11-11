@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 
 import com.everhack.compassnote.R;
 import com.everhack.compassnote.foursquare.FoursquareVenue;
 import com.everhack.compassnote.view.PlaceItemView;
 import com.everhack.compassnote.view.PlaceItemView.OnItemFavorited;
+import com.everhack.compassnote.view.ToggleButton;
 
 public class PlacesAdapter extends BaseAdapter implements OnItemFavorited{
 
@@ -52,9 +54,14 @@ public class PlacesAdapter extends BaseAdapter implements OnItemFavorited{
             convertView = mInflater.inflate(R.layout.list_item_place, parent, false);
         }
         view = (PlaceItemView) convertView;
+        ToggleButton button = (ToggleButton) view.findViewById(R.id.buttonFavorite);
+        if (mSelecteVenues.containsKey(getItem(position))) {
+            button.setOn();
+        } else {
+            button.setOff();
+        }
 
         FoursquareVenue venue = (FoursquareVenue) getItem(position);
-        //movieData.setId(position);
 
         view.bindView(venue, mHandler, this);
         return view;
