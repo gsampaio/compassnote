@@ -6,10 +6,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
+import com.everhack.compassnote.R;
 import com.everhack.compassnote.adapter.PlacesAdapter;
+import com.everhack.compassnote.foursquare.FoursquareService;
+import com.everhack.compassnote.foursquare.FoursquareServiceDelegate;
+import com.everhack.compassnote.foursquare.FoursquareVenue;
 import com.everhack.compassnote.model.PlaceData;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,12 +22,14 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class ListPlacesActivity extends ListActivity {
+public class ListPlacesActivity extends ListActivity implements FoursquareServiceDelegate {
     private PlacesAdapter mAdapter; 
 
     private final int MENU_REFRESH = 0;
 
     public final static int EVENT_FAVORITE_ITEM = 0;
+    
+    public final static String INTENT_EXTRA_CITY = "city";
 
     private List<PlaceData> mEntries = new ArrayList<PlaceData>();
     private EventHandler mHandler = new EventHandler();
@@ -30,12 +37,20 @@ public class ListPlacesActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_movies);
 
-        createFakeEntries();
+      setContentView(R.layout.activity_list_places);
 
-        mAdapter = new PlacesAdapter(mEntries, this, mHandler);
-        setListAdapter(mAdapter);
+        Intent intent = getIntent();
+        String city = intent.getExtras().getString(INTENT_EXTRA_CITY);
+
+        if (city != null) {
+            FoursquareService service = new FoursquareService(this);
+            service.getVenuesInCity(city);
+        }
+
+        //TODO Set loading
+
+//        createFakeEntries();
     }
 
     @Override
@@ -79,6 +94,7 @@ public class ListPlacesActivity extends ListActivity {
     }
     
 
+    
     /**
      * Communicator handler. It should be used in order to link list item views and this acitivty.
      */
@@ -94,6 +110,22 @@ public class ListPlacesActivity extends ListActivity {
             }
             }
         }
+        
+    }
+
+    @Override
+    public void receivedResponse(Object response) {
+        List<FoursquareVenue> venueList = (List<FoursquareVenue>) response;
+
+        mAdapter = new PlacesAdapter(venueList, this, mHandler);
+        setListAdapter(mAdapter);
+        //Set loading false
+
+    }
+
+    @Override
+    public void requestFailed() {
+        // TODO Auto-generated method stub
         
     }
 }

@@ -2,6 +2,7 @@ package com.everhack.compassnote.view;
 
 import com.everhack.compassnote.R;
 import com.everhack.compassnote.activity.ListPlacesActivity;
+import com.everhack.compassnote.foursquare.FoursquareVenue;
 import com.everhack.compassnote.model.PlaceData;
 
 import android.content.Context;
@@ -20,8 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PlaceItemView extends RelativeLayout {
-    private ImageButton mButtonFavorite;
-    private ImageButton mButtonRemove;
+    private ToggleButton mButtonFavorite;
 
     private ImageView mScenePicture;
     private TextView mTitleView;
@@ -29,16 +29,17 @@ public class PlaceItemView extends RelativeLayout {
     private TextView mCommentView;
     private TextView mLoadingView;
 
-    private PlaceData mData;
+    private FoursquareVenue mData;
     private Handler mHandler;
     
     private OnClickListener mButtonRemoveOnClickListener = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
-            Message msg = mHandler.obtainMessage(ListPlacesActivity.EVENT_FAVORITE_ITEM);
-            msg.arg1 = mData.getId();
-            mHandler.dispatchMessage(msg);
+            //TODO
+//            Message msg = mHandler.obtainMessage(ListPlacesActivity.EVENT_FAVORITE_ITEM);
+//            msg.arg1 = mData.getId();
+//            mHandler.dispatchMessage(msg);
         }
     };
 
@@ -46,11 +47,11 @@ public class PlaceItemView extends RelativeLayout {
         super(context, attrs);
     }
 
-    public void bindView(PlaceData data, Handler handler) {
+    public void bindView(FoursquareVenue data, Handler handler) {
 
-        mTitleView.setText(data.getTitle());
-        mSubtitleView.setText(data.getSubtitle());
-        mCommentView.setText(data.getComment());
+        mTitleView.setText(data.getName());
+        mSubtitleView.setText(data.getCategory());
+        mCommentView.setText(data.getLocation().getAddress());
 
         mLoadingView.setVisibility(VISIBLE);
         mScenePicture.setImageDrawable(null);
@@ -58,14 +59,15 @@ public class PlaceItemView extends RelativeLayout {
         mHandler = handler;
         mData = data;
 
-        new LoadImageTask().execute(data.getDrawableResScene());
+        //new LoadImageTask().execute(data.getDrawableResScene());
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         
-        mButtonFavorite = (ImageButton) findViewById(R.id.buttonFavorite);
+        mButtonFavorite = (ToggleButton) findViewById(R.id.buttonFavorite);
+        mButtonFavorite.setToggleResources(R.drawable.ic_rating_favorite, R.drawable.ic_rating_favorite_red);
 
         mTitleView = (TextView) findViewById(R.id.textTitle);
         mSubtitleView = (TextView) findViewById(R.id.textSubtitle);
@@ -74,12 +76,10 @@ public class PlaceItemView extends RelativeLayout {
 
         mScenePicture = (ImageView) findViewById(R.id.imageScene);
 
-        mButtonRemove.setOnClickListener(mButtonRemoveOnClickListener);
-
-
         mButtonFavorite.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                mButtonFavorite.toggle();
                 Toast.makeText(getContext(), "TODOi", Toast.LENGTH_SHORT).show();
                 
             }

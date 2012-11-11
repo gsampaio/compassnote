@@ -3,6 +3,7 @@ package com.everhack.compassnote.adapter;
 import java.util.List;
 
 import com.everhack.compassnote.R;
+import com.everhack.compassnote.foursquare.FoursquareVenue;
 import com.everhack.compassnote.model.PlaceData;
 import com.everhack.compassnote.view.PlaceItemView;
 
@@ -15,12 +16,12 @@ import android.widget.BaseAdapter;
 
 public class PlacesAdapter extends BaseAdapter {
 
-    private List mData;
+    private List<FoursquareVenue> mData;
     private LayoutInflater mInflater;
     // Helper for communication with owner activity
     private Handler mHandler;
 
-    public PlacesAdapter(List data, Context context, Handler handler) {
+    public PlacesAdapter(List<FoursquareVenue> data, Context context, Handler handler) {
         mData = data;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mHandler = handler;
@@ -49,10 +50,10 @@ public class PlacesAdapter extends BaseAdapter {
         }
         view = (PlaceItemView) convertView;
 
-        PlaceData movieData = (PlaceData) getItem(position);
-        movieData.setId(position);
+        FoursquareVenue venue = (FoursquareVenue) getItem(position);
+        //movieData.setId(position);
 
-        view.bindView(movieData, mHandler); 
+        view.bindView(venue, mHandler); 
         return view;
     }
     
@@ -60,7 +61,7 @@ public class PlacesAdapter extends BaseAdapter {
         mHandler = handler;
     }
 
-    public void updateItems(List entries) {
+    public void updateItems(List<FoursquareVenue> entries) {
         mData = entries;
         notifyDataSetChanged();
     }
