@@ -16,8 +16,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class ListPlacesActivity extends ListActivity {
     private PlacesAdapter mAdapter;
@@ -28,7 +28,7 @@ public class ListPlacesActivity extends ListActivity {
 
     public final static String INTENT_EXTRA_CITY = "city";
 
-    private List<PlaceData> mEntries = new ArrayList<PlaceData>();
+    private List<FoursquareVenue> mSelectedVenues = new ArrayList<FoursquareVenue>();
     private EventHandler mHandler = new EventHandler();
 
     @Override
@@ -39,6 +39,9 @@ public class ListPlacesActivity extends ListActivity {
 
         Intent intent = getIntent();
         String city = intent.getExtras().getString(INTENT_EXTRA_CITY);
+        
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarVisibility(true);
 
         if (city != null) {
             FoursquareVenueService.getVenuesInCity(city, new FoursquareServiceDelegate<List<FoursquareVenue>>() {
@@ -48,64 +51,24 @@ public class ListPlacesActivity extends ListActivity {
 
                     mAdapter = new PlacesAdapter(venueList, ListPlacesActivity.this, mHandler);
                     setListAdapter(mAdapter);
-                    //Set loading false
-
+                    
+                    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+                    setProgressBarVisibility(false);
                 }
 
                 @Override
                 public void requestFailed() {
                     // TODO Auto-generated method stub
-
                 }
             });
         }
 
-        //TODO Set loading
-
-        //        createFakeEntries();
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-
-        PlaceData entry = (PlaceData) getListAdapter().getItem(position);
-        Toast.makeText(this, "TODO" + " " + entry.getTitle() + "!", Toast.LENGTH_SHORT).show();
     }
-
-
-    private void createFakeEntries() {
-        //Add fake entries
-        //        mEntries.add(new PlaceData("Love & Death", "Woody Allen",
-        //                        "In czarist Russia, a neurotic soldier and his distant cousin formulate a plot to assassinate Napoleon.",
-        //                        R.drawable.boris_grush_screen));
-        //
-        //        mEntries.add(new PlaceData("8 1/2", "Federico Fellini",
-        //                "A harried movie director retreats into his memories and fantasies.",
-        //                R.drawable.oito_meio_screen));
-        //
-        //        mEntries.add(new PlaceData("Ice Age", "Chris Wedge & Carlos Saldanha",
-        //                "Set during the Ice Age, a sabertooth tiger, a sloth, and a wooly mammoth find a lost human infant, and they try to return him to his tribe.",
-        //                R.drawable.ice_age_screen));
-        //
-        //        mEntries.add(new PlaceData("Little Miss Sunsine", "Jonathan Dayton & Valerie Faris",
-        //                "A family determined to get their young daughter into the finals of a beauty pageant take a cross-country trip in their VW bus.",
-        //                R.drawable.little_miss_scene));
-        //
-        //        mEntries.add(new PlaceData("On the road", "Walter Salles",
-        //                "Dean and Sal are the portrait of the Beat Generation. Their search for \"It\" results in a fast paced, energetic roller coaster ride with highs and lows throughout the U.S.",
-        //                R.drawable.on_the_road_screen));
-        //
-        //        mEntries.add(new PlaceData("Marley & Me", "David Frankel",
-        //                "A family learns important life lessons from their adorable, but naughty and neurotic dog.",
-        //                R.drawable.marley_scene));
-        //
-        //        mEntries.add(new PlaceData("Trainspotting", "Danny Boyle",
-        //                "Renton, deeply immersed in the Edinburgh drug scene, tries to clean up and get out, despite the allure of the drugs and influence of friends.",
-        //                R.drawable.trainspotting_scene));
-    }
-
-
 
     /**
      * Communicator handler. It should be used in order to link list item views and this acitivty.
@@ -122,7 +85,6 @@ public class ListPlacesActivity extends ListActivity {
             }
             }
         }
-
     }
 
 
