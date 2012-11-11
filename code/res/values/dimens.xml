@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="lateral_padding_text_full_screen">10dip</dimen>
+
+    <!-- List item values -->
+    <dimen name="paddingButtonLateral">3dip</dimen>
+    <dimen name="paddingTopItem">10dip</dimen>
+    <dimen name="paddingTextLateral">5dip</dimen>
+    
+</resources>

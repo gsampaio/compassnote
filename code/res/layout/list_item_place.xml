@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.paulovic.labs.movee.view.PlaceItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="230dip"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@drawable/explore_cell_bg_bottom">
+
+    <TextView
+        android:id="@+id/textLoading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/black"
+        android:paddingTop="@dimen/paddingTopItem"
+        android:gravity="center"
+        android:text="@string/loading_uppercase"/>
+    <ImageView
+        android:id="@+id/imageScene"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:duplicateParentState="true"/>
+
+     <LinearLayout
+         android:id="@+id/actionsBox"
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         android:orientation="horizontal"
+         android:gravity="right"
+         android:paddingTop="@dimen/paddingTopItem"
+         android:background="@color/color_content_box"
+         android:layout_alignParentBottom="true">
+
+         <ImageButton 
+             android:id="@+id/buttonFavorite"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:paddingLeft="@dimen/paddingButtonLateral"
+             android:paddingRight="@dimen/paddingButtonLateral"
+             android:paddingTop="@dimen/paddingButtonLateral"
+             android:background="@drawable/image_button_background"
+             android:src="@drawable/ic_rating_favorite"/>
+
+     </LinearLayout>
+    
+    <TextView
+        android:id="@+id/textComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_content_box"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/black"
+        android:paddingTop="@dimen/paddingTopItem"
+        android:paddingLeft="@dimen/paddingTextLateral"
+        android:paddingRight="@dimen/paddingTextLateral"
+        android:layout_above="@id/actionsBox"/>
+
+    <TextView
+        android:id="@+id/textSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_transparent_title_stripe"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white"
+        android:paddingLeft="@dimen/paddingTextLateral"
+        android:layout_above="@id/textComment"/>
+        
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_transparent_title_stripe"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/white"
+        android:paddingLeft="@dimen/paddingTextLateral"
+        android:layout_above="@id/textSubtitle"/>
+
+</com.paulovic.labs.movee.view.PlaceItemView>

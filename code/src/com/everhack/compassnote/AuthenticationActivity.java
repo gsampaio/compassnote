@@ -1,5 +1,6 @@
 package com.everhack.compassnote;
 
+import com.everhack.compassnote.activity.PlacesSearchActivity;
 import com.evernote.client.oauth.android.EvernoteSession;
 
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 public class AuthenticationActivity extends Activity {
     private Button mLoginButton;
+    private Button mTestButton;
     private TextView mInformationMessagesText;
     
     private EvernoteSession mEvernoteSession;
@@ -22,6 +24,7 @@ public class AuthenticationActivity extends Activity {
         setContentView(R.layout.activity_authentication);
 
         setupUI();
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out);
 
         CompassApp app = ((CompassApp) getApplication()); 
         mEvernoteSession = app.getSessionContext().getSession(getApplicationContext());
@@ -52,10 +55,9 @@ public class AuthenticationActivity extends Activity {
     
     private void moveToNextActivityIfNeeded() {
         if (mEvernoteSession.isLoggedIn()) {
-        //TODO
-//        Intent intent = new Intent();
-//        startActivity(intent);
-//        finish();
+            Intent intent = new Intent(this, PlacesSearchActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
     private void setupUI() {
@@ -69,6 +71,18 @@ public class AuthenticationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startAuth();
+            }
+        });
+        
+        mTestButton = (Button) findViewById(R.id.testButton);
+        mTestButton.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AuthenticationActivity.this, PlacesSearchActivity.class);
+                startActivity(intent);
+                finish();
+
             }
         });
     }

@@ -6,4 +6,8 @@
     <string name="authentication_error">Oops. It seems that something went wrong :(</string>
     <string name="welcome_message">Connect to your Evernote account</string>
 
+    <string name="where_to_go">Where would you like to go to?</string>
+    <string name="let_me_go">Let me go</string>
+    
+    <string name="loading_uppercase">LOADING</string>
 </resources>

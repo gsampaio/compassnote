@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView 
+        android:id="@+id/textTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/lateral_padding_text_full_screen"
+        android:textColor="@android:color/holo_blue_light"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/where_to_go"/>
+
+    <EditText 
+        android:id="@+id/editTextPlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/lateral_padding_text_full_screen"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@id/textTitle"
+        tools:context=".AuthenticationActivity" />
+
+    <Button 
+        android:id="@+id/buttonNextScreen"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/let_me_go"
+        android:layout_below="@id/editTextPlace"/>
+</RelativeLayout>
