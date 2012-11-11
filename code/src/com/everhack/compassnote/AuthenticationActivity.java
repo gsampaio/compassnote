@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.thrift.TException;
+import org.apache.thrift.transport.TTransportException;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -100,54 +101,53 @@ public class AuthenticationActivity extends Activity {
         updateUi();
     }
 
-    /**
-     * Update the UI based on Evernote authentication state.
-     */
-     private void updateUi() {
-         if (!mEvernoteSession.isLoggedIn()) {
-             mInformationMessagesText.setVisibility(View.VISIBLE);
-             mInformationMessagesText.setText(R.string.authentication_error);
-         } else {
+    private void updateUi() {
+        if (!mEvernoteSession.isLoggedIn()) {
+            mInformationMessagesText.setVisibility(View.VISIBLE);
+            mInformationMessagesText.setText(R.string.authentication_error);
+        } else {
 
-             // FIXME: Verificar se aqui eh o lugar certo para verificar se jah
-             // temos o guid no applicationCtx, o ideal era verificar sempre que
-             // abrisse o app
-             CompassApp app = ((CompassApp) getApplication());
-             Client c = app.getSessionContext().getNoteStore();
-             Notebook nb = null;
+            // FIXME: Verificar se aqui eh o lugar certo para verificar se jah
+            // temos o guid no applicationCtx, o ideal era verificar sempre que
+            // abrisse o app
+            CompassApp app = ((CompassApp) getApplication());
 
-             if (app.getSessionContext().getNotebookGuid() == null) {
-                 List<Notebook> nbs = new ArrayList<Notebook>();
-                 try {
-                     nbs = app.getSessionContext().getNoteStore()
-                             .listNotebooks(mEvernoteSession.getAuthToken());
-                     for (Notebook n : nbs) {
-                         if (n.getName().equals(
-                                 getResources().getString(R.string.app_name))) {
-                             app.getSessionContext()
-                             .setNotebookGuid(n.getGuid());
-                             return;
-                         }
-                     }
+            try {
+                app.getSessionContext().setNoteStore(mEvernoteSession.createNoteStore());
+            } catch (TTransportException e) {
+                e.printStackTrace();
+            }
 
-                     nb = new Notebook();
-                     nb.setName(getResources().getString(R.string.app_name));
-                     nb = c.createNotebook(mEvernoteSession.getAuthToken(), nb);
-                 } catch (EDAMUserException e) {
-                     // TODO Auto-generated catch block
-                     e.printStackTrace();
-                 } catch (EDAMSystemException e) {
-                     // TODO Auto-generated catch block
-                     e.printStackTrace();
-                 } catch (TException e) {
-                     // TODO Auto-generated catch block
-                     e.printStackTrace();
-                 }
 
-                 if (nb != null)
-                     app.getSessionContext().setNotebookGuid(nb.getGuid());
-             }
-         }
-     }
+            Client c = app.getSessionContext().getNoteStore();
+            Notebook nb = null;
+
+            if (app.getSessionContext().getNotebookGuid() == null) {
+                List<Notebook> nbs = new ArrayList<Notebook>();
+                try {
+                    nbs = app.getSessionContext().getNoteStore().listNotebooks(mEvernoteSession.getAuthToken());
+                    for (Notebook n : nbs) {
+                        if (n.getName().equals(getResources().getString(R.string.app_name))) {
+                            app.getSessionContext().setNotebookGuid(n.getGuid());
+                            return;
+                        }
+                    }
+
+                    nb = new Notebook();
+                    nb.setName(getResources().getString(R.string.app_name));
+                    nb = c.createNotebook(mEvernoteSession.getAuthToken(), nb);
+                } catch (EDAMUserException e) {
+                    e.printStackTrace();
+                } catch (EDAMSystemException e) {
+                    e.printStackTrace();
+                } catch (TException e) {
+                    e.printStackTrace();
+                }
+
+                if (nb != null)
+                    app.getSessionContext().setNotebookGuid(nb.getGuid());
+            }
+        }
+    }
 }
 

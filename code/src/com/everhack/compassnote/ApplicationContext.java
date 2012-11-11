@@ -37,13 +37,6 @@ public class ApplicationContext {
                     CONSUMER_SECRET, EVERNOTE_HOST, null);
         }
 
-//        try {
-//            this.noteStore = mEvernoteSession.createNoteStore();
-//        } catch (TTransportException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-
         return mEvernoteSession;
     }
 
@@ -59,6 +52,10 @@ public class ApplicationContext {
         return this.noteStore;
     }
 
+    public void setNoteStore(Client noteStore) {
+        this.noteStore = noteStore;
+    }
+
     public String getNotebookGuid() {
         return this.notebookGuid;
     }
@@ -72,7 +69,6 @@ public class ApplicationContext {
     public Note getNoteFromRoteiro(Roteiro r) {
         Note n = new Note();
         n.setTitle(r.getCity());
-
         n.setContent(r.toEvernote());
 
         return n;
@@ -81,4 +77,5 @@ public class ApplicationContext {
     public Roteiro getRoteiroFromNote(Note n) {
         return new Roteiro();
     }
+
 }
