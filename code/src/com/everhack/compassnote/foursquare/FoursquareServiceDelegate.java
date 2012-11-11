@@ -1,6 +1,8 @@
 package com.everhack.compassnote.foursquare;
 
-public interface FoursquareServiceDelegate {
-	void receivedResponse(Object response);
+
+public interface FoursquareServiceDelegate<T> {
+	void receivedResponse(T response);	
 	void requestFailed();
+
 }
