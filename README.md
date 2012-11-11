@@ -1,4 +1,4 @@
-Compassnote for iOS version 1.0
+Compassnote for Android version 1.0
 ================================
 
 What this is
