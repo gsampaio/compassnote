@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
@@ -62,6 +63,13 @@ public class ListPlacesActivity extends ListActivity {
         }
 
     }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_list_places, menu);
+        return true;
+    }
+
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {

@@ -1,8 +1,9 @@
 <resources>
 
-    <string name="app_name">CompassNote</string>
+    <string name="app_name">Compass Note</string>
     <string name="authentication_sentence">Connect to your Evernote account.</string>
     <string name="menu_settings">Settings</string>
+    <string name="menu_accept">Next step</string>
     <string name="authentication_error">Oops. It seems that something went wrong :(</string>
     <string name="welcome_message">Connect to your Evernote account</string>
 

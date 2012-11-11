@@ -63,6 +63,7 @@ public class AuthenticationActivity extends Activity {
         super.onResume();
         updateUi();
 
+        updateUi();
         moveToNextActivityIfNeeded();
     }
 
@@ -120,7 +121,6 @@ public class AuthenticationActivity extends Activity {
             } catch (TTransportException e) {
                 e.printStackTrace();
             }
-
 
             Client c = app.getSessionContext().getNoteStore();
             Notebook nb = null;
@@ -182,6 +182,7 @@ public class AuthenticationActivity extends Activity {
 //
 //                if (nb != null)
 //                    app.getSessionContext().setNotebookGuid(nb.getGuid());
+
             }
         }
     }

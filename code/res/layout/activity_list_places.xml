@@ -5,12 +5,16 @@
     android:orientation="vertical"
     android:background="@color/list_bg" >
 
-    <LinearLayout
-        android:id="@+id/header"
+    <TextView 
+        android:id="@+id/textTitle"
         android:layout_width="match_parent"
-        android:layout_height="20dip" >
-    </LinearLayout>
-
+        android:layout_height="wrap_content"
+        android:padding="@dimen/lateral_padding_text_full_screen"
+        android:textColor="@android:color/holo_blue_light"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/padding"
+        android:text="Choose your destinies"/>
+    
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
