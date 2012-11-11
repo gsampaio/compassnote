@@ -2,17 +2,16 @@ package com.everhack.compassnote.adapter;
 
 import java.util.List;
 
-import com.everhack.compassnote.R;
-import com.everhack.compassnote.foursquare.FoursquareVenue;
-import com.everhack.compassnote.model.PlaceData;
-import com.everhack.compassnote.view.PlaceItemView;
-
 import android.content.Context;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import com.everhack.compassnote.R;
+import com.everhack.compassnote.foursquare.FoursquareVenue;
+import com.everhack.compassnote.view.PlaceItemView;
 
 public class PlacesAdapter extends BaseAdapter {
 
@@ -53,10 +52,10 @@ public class PlacesAdapter extends BaseAdapter {
         FoursquareVenue venue = (FoursquareVenue) getItem(position);
         //movieData.setId(position);
 
-        view.bindView(venue, mHandler); 
+        view.bindView(venue, mHandler);
         return view;
     }
-    
+
     public void setCommunicationHandler(Handler handler) {
         mHandler = handler;
     }
@@ -65,7 +64,7 @@ public class PlacesAdapter extends BaseAdapter {
         mData = entries;
         notifyDataSetChanged();
     }
-    
+
     public void removeItem(int id) {
         mData.remove(id);
         notifyDataSetChanged();

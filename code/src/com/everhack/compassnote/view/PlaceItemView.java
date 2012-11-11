@@ -31,7 +31,7 @@ public class PlaceItemView extends RelativeLayout {
 
     private FoursquareVenue mData;
     private Handler mHandler;
-    
+
     private OnClickListener mButtonRemoveOnClickListener = new OnClickListener() {
 
         @Override
@@ -65,7 +65,7 @@ public class PlaceItemView extends RelativeLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        
+
         mButtonFavorite = (ToggleButton) findViewById(R.id.buttonFavorite);
         mButtonFavorite.setToggleResources(R.drawable.ic_rating_favorite, R.drawable.ic_rating_favorite_red);
 
@@ -81,7 +81,7 @@ public class PlaceItemView extends RelativeLayout {
             public void onClick(View v) {
                 mButtonFavorite.toggle();
                 Toast.makeText(getContext(), "TODOi", Toast.LENGTH_SHORT).show();
-                
+
             }
         });
     }
@@ -103,7 +103,7 @@ public class PlaceItemView extends RelativeLayout {
             mLoadingView.setVisibility(GONE);
             mScenePicture.setImageDrawable(image);
             Animation myFadeInAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
-            mScenePicture.startAnimation(myFadeInAnimation); 
+            mScenePicture.startAnimation(myFadeInAnimation);
         }
     }
 }
