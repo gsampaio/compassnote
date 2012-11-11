@@ -28,7 +28,17 @@ public class ToggleButton extends ImageButton {
         mOnResource = on;
         mOffResource = off;
     }
+
+    public void setOn() {
+        mIsOn = true;
+        setImageResource(mOnResource);
+    }
     
+    public void setOff() {
+        mIsOn = false;
+        setImageResource(mOffResource);
+    }
+
     public void toggle(){
         if (mIsOn) {
             mIsOn = false;
@@ -39,5 +49,8 @@ public class ToggleButton extends ImageButton {
         }
     }
     
+    public boolean isOn() {
+        return mIsOn;
+    }
     
 }

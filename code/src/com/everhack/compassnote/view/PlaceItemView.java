@@ -1,11 +1,17 @@
 package com.everhack.compassnote.view;
 
+import java.util.List;
+
 import com.everhack.compassnote.R;
 import com.everhack.compassnote.activity.ListPlacesActivity;
+import com.everhack.compassnote.foursquare.FoursquareServiceDelegate;
 import com.everhack.compassnote.foursquare.FoursquareVenue;
+import com.everhack.compassnote.foursquare.FoursquareVenueImageService;
+import com.everhack.compassnote.foursquare.FoursquareVenueService;
 import com.everhack.compassnote.model.PlaceData;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -31,6 +37,8 @@ public class PlaceItemView extends RelativeLayout {
 
     private FoursquareVenue mData;
     private Handler mHandler;
+    
+    private OnItemFavorited mListener;
 
     private OnClickListener mButtonRemoveOnClickListener = new OnClickListener() {
 
@@ -47,7 +55,7 @@ public class PlaceItemView extends RelativeLayout {
         super(context, attrs);
     }
 
-    public void bindView(FoursquareVenue data, Handler handler) {
+    public void bindView(FoursquareVenue data, Handler handler, OnItemFavorited listener) {
 
         mTitleView.setText(data.getName());
         mSubtitleView.setText(data.getCategory());
@@ -58,7 +66,25 @@ public class PlaceItemView extends RelativeLayout {
 
         mHandler = handler;
         mData = data;
+        mListener = listener;
 
+        FoursquareVenueImageService.getVenuesImageInCity(data, 200, 200, new FoursquareServiceDelegate<Bitmap>() {
+
+            @Override
+            public void receivedResponse(Bitmap response) {
+                mLoadingView.setVisibility(GONE);
+                mScenePicture.setImageBitmap(response);
+                Animation myFadeInAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fadein);
+                mScenePicture.startAnimation(myFadeInAnimation);
+            }
+
+            @Override
+            public void requestFailed() {
+                // TODO Auto-generated method stub
+                
+            }
+            
+        });
         //new LoadImageTask().execute(data.getDrawableResScene());
     }
 
@@ -67,7 +93,8 @@ public class PlaceItemView extends RelativeLayout {
         super.onFinishInflate();
 
         mButtonFavorite = (ToggleButton) findViewById(R.id.buttonFavorite);
-        mButtonFavorite.setToggleResources(R.drawable.ic_rating_favorite, R.drawable.ic_rating_favorite_red);
+        mButtonFavorite.setToggleResources(R.drawable.ic_rating_favorite_red, R.drawable.ic_rating_favorite);
+        mButtonFavorite.setOff();
 
         mTitleView = (TextView) findViewById(R.id.textTitle);
         mSubtitleView = (TextView) findViewById(R.id.textSubtitle);
@@ -80,8 +107,7 @@ public class PlaceItemView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 mButtonFavorite.toggle();
-                Toast.makeText(getContext(), "TODOi", Toast.LENGTH_SHORT).show();
-
+                mListener.onItemFavorited(mData, mButtonFavorite.isOn());
             }
         });
     }
@@ -106,4 +132,9 @@ public class PlaceItemView extends RelativeLayout {
             mScenePicture.startAnimation(myFadeInAnimation);
         }
     }
+    
+    public interface OnItemFavorited {
+        public void onItemFavorited(FoursquareVenue venue, boolean isFavorite);
+    }
+
 }

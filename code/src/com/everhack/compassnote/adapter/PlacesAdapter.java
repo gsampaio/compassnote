@@ -1,5 +1,6 @@
 package com.everhack.compassnote.adapter;
 
+import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
@@ -12,11 +13,14 @@ import android.widget.BaseAdapter;
 import com.everhack.compassnote.R;
 import com.everhack.compassnote.foursquare.FoursquareVenue;
 import com.everhack.compassnote.view.PlaceItemView;
+import com.everhack.compassnote.view.PlaceItemView.OnItemFavorited;
 
-public class PlacesAdapter extends BaseAdapter {
+public class PlacesAdapter extends BaseAdapter implements OnItemFavorited{
 
     private List<FoursquareVenue> mData;
     private LayoutInflater mInflater;
+    private HashMap<FoursquareVenue, Boolean> mSelecteVenues = new HashMap<FoursquareVenue, Boolean>();
+
     // Helper for communication with owner activity
     private Handler mHandler;
 
@@ -52,7 +56,7 @@ public class PlacesAdapter extends BaseAdapter {
         FoursquareVenue venue = (FoursquareVenue) getItem(position);
         //movieData.setId(position);
 
-        view.bindView(venue, mHandler);
+        view.bindView(venue, mHandler, this);
         return view;
     }
 
@@ -69,4 +73,14 @@ public class PlacesAdapter extends BaseAdapter {
         mData.remove(id);
         notifyDataSetChanged();
     }
+
+    @Override
+    public void onItemFavorited(FoursquareVenue venue, boolean isFavorite) {
+        if (!isFavorite) {
+            mSelecteVenues.remove(venue);
+        }else {
+            mSelecteVenues.put(venue, isFavorite);
+        }
+    }
+    
 }

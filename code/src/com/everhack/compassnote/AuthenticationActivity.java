@@ -22,7 +22,6 @@ import com.evernote.edam.type.Notebook;
 
 public class AuthenticationActivity extends Activity {
     private Button mLoginButton;
-    private Button mTestButton;
     private TextView mInformationMessagesText;
 
     private EvernoteSession mEvernoteSession;
@@ -37,8 +36,7 @@ public class AuthenticationActivity extends Activity {
         overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out);
 
         CompassApp app = ((CompassApp) getApplication());
-        mEvernoteSession = app.getSessionContext().getSession(
-                getApplicationContext());
+        mEvernoteSession = app.getSessionContext().getSession(getApplicationContext());
     }
 
     /**
@@ -84,18 +82,6 @@ public class AuthenticationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 startAuth();
-            }
-        });
-
-        mTestButton = (Button) findViewById(R.id.testButton);
-        mTestButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AuthenticationActivity.this, PlacesSearchActivity.class);
-                startActivity(intent);
-                finish();
-
             }
         });
 

@@ -35,13 +35,13 @@ public class ListPlacesActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_list_places);
 
         Intent intent = getIntent();
         String city = intent.getExtras().getString(INTENT_EXTRA_CITY);
-        
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setProgressBarVisibility(true);
+
+        setProgressBarIndeterminateVisibility(true);
 
         if (city != null) {
             FoursquareVenueService.getVenuesInCity(city, new FoursquareServiceDelegate<List<FoursquareVenue>>() {
@@ -51,14 +51,12 @@ public class ListPlacesActivity extends ListActivity {
 
                     mAdapter = new PlacesAdapter(venueList, ListPlacesActivity.this, mHandler);
                     setListAdapter(mAdapter);
-                    
-                    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-                    setProgressBarVisibility(false);
+                    setProgressBarIndeterminateVisibility(false);
                 }
 
                 @Override
                 public void requestFailed() {
-                    // TODO Auto-generated method stub
+                    setProgressBarIndeterminateVisibility(false);
                 }
             });
         }

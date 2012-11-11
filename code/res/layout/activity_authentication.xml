@@ -3,6 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <View
+        android:id="@+id/padding"
+        android:layout_height="30dip"
+        android:layout_width="match_parent"/>
+
+    <TextView 
+        android:id="@+id/textTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/lateral_padding_text_full_screen"
+        android:textColor="@android:color/holo_blue_light"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/padding"
+        android:text="Welcome to Compass Note"/>
+
     <TextView
         android:id="@+id/textInformationMessages"
         android:layout_width="wrap_content"
@@ -16,13 +31,7 @@
         android:layout_width="wrap_content" 
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:text="Connect to Evernote"
         android:layout_below="@id/textInformationMessages"/>
-    
-        <Button 
-        android:id="@+id/testButton"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="TESTE"/>
     
 </RelativeLayout>

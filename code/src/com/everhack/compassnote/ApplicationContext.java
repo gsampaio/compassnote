@@ -35,12 +35,12 @@ public class ApplicationContext {
                     CONSUMER_SECRET, EVERNOTE_HOST, null);
         }
 
-        try {
-            this.noteStore = mEvernoteSession.createNoteStore();
-        } catch (TTransportException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        try {
+//            this.noteStore = mEvernoteSession.createNoteStore();
+//        } catch (TTransportException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
 
         return mEvernoteSession;
     }
